@@ -1,9 +1,6 @@
-var c = require('chalk'),
-    pj = require('prettyjson'),
-    validateip = require('validate-ip'),
+var validateip = require('validate-ip'),
     condenseWhitespace = require('condense-whitespace'),
     _ = require('underscore'),
-    async = require('async'),
     spawn = require('child_process').spawn,
     fs = require('fs'),
     config = require('./config'),
@@ -26,7 +23,7 @@ var processTopTalkers = function(direction, topTalkers) {
         packets: _.sortBy(topTalkers, 'packets').reverse().slice(0, config.listLimit),
         bytes: _.sortBy(topTalkers, 'bytes').reverse().slice(0, config.listLimit),
     };
-    console.log(direction, topTalkers);
+    console.log('Top Talkers ' +direction+':\n', topTalkers);
 };
 
 process.on('exit', function() {
@@ -35,13 +32,12 @@ process.on('exit', function() {
         pmacctdProcess.kill();
     });
 });
-var DIRECTION = 'src';
 _.each(config.localNetworks, function(net, index) {
     if (index > 0)
         pcapFilter += ' or ';
     pcapFilter += 'dst net ' + net;
 });
-var pmArgs_in = '-i ' + config.interface + ' -P print -r ' + config.interval + ' -c ' + DIRECTION + '_host ' + pcapFilter;
+var pmArgs_in = '-i ' + config.interface + ' -P print -r ' + config.interval + ' -c ' + 'src' + '_host ' + pcapFilter;
 
 pcapFilter = '';
 _.each(config.localNetworks, function(net, index) {
@@ -49,7 +45,7 @@ _.each(config.localNetworks, function(net, index) {
         pcapFilter += ' or ';
     pcapFilter += 'src net ' + net;
 });
-var pmArgs_out = '-i ' + config.interface + ' -P print -r ' + config.interval + ' -c ' + DIRECTION + '_host ' + pcapFilter;
+var pmArgs_out = '-i ' + config.interface + ' -P print -r ' + config.interval + ' -c ' + 'src' + '_host ' + pcapFilter;
 
 
 pmacctdProcesses.in = spawn(config.pmacctd, pmArgs_in.split(' '));
