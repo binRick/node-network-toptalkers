@@ -5,7 +5,7 @@ var validateip = require('validate-ip'),
     fs = require('fs'),
     config = require('./config'),
     pmacctdProcess = null,
-    pcapFilter = null,
+    pcapFilter = '',
     pmacctdProcesses = {};
 
 
