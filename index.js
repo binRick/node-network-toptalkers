@@ -12,24 +12,24 @@ var c = require('chalk'),
 
 
 var processTopTalkers = function(direction, topTalkers) {
-    topTalkers=condenseWhitespace(topTalkers).split('\n').filter(function(i){
-	return i.split(' ').length==3 && validateip(i.split(' ')[0]);
-    }).map(function(i){
-	return {
-		ip: i.split(' ')[0],
-		packets: +i.split(' ')[1],
-		bytes: +i.split(' ')[2],
-	};
+    topTalkers = condenseWhitespace(topTalkers).split('\n').filter(function(i) {
+        return i.split(' ').length == 3 && validateip(i.split(' ')[0]);
+    }).map(function(i) {
+        return {
+            ip: i.split(' ')[0],
+            packets: +i.split(' ')[1],
+            bytes: +i.split(' ')[2],
+        };
     });
-    topTalkers= {
-	    packets: _.sortBy(topTalkers, 'packets').reverse().slice(0,config.listLimit),
-	    bytes: _.sortBy(topTalkers, 'bytes').reverse().slice(0,config.listLimit),
+    topTalkers = {
+        packets: _.sortBy(topTalkers, 'packets').reverse().slice(0, config.listLimit),
+        bytes: _.sortBy(topTalkers, 'bytes').reverse().slice(0, config.listLimit),
     };
     console.log(direction, topTalkers);
 };
 
 process.on('exit', function() {
-	_.each(pmacctdProcesses, function(pmacctdProcess){
+    _.each(pmacctdProcesses, function(pmacctdProcess) {
         console.log(c.yellow('\nKilling pmacctd child process with pid ' + c.red.bgWhite(pmacctdProcess.pid)));
         pmacctdProcess.kill();
     });
@@ -44,9 +44,9 @@ var pmArgs_in = '-i ' + config.interface + ' -P print -r ' + config.interval + '
 
 pcapFilter = '';
 _.each(config.localNetworks, function(net, index) {
-	    if (index > 0)
-		            pcapFilter += ' or ';
-	        pcapFilter += 'src net ' + net;
+    if (index > 0)
+        pcapFilter += ' or ';
+    pcapFilter += 'src net ' + net;
 });
 var pmArgs_out = '-i ' + config.interface + ' -P print -r ' + config.interval + ' -c ' + DIRECTION + '_host ' + pcapFilter;
 
@@ -58,8 +58,7 @@ pmacctdProcesses.in.on('exit', function(code) {
 pmacctdProcesses.in.stdout.on('data', function(data) {
     processTopTalkers('in', data.toString());
 });
-pmacctdProcesses.in.stderr.on('data', function(data) {
-});
+pmacctdProcesses.in.stderr.on('data', function(data) {});
 
 pmacctdProcesses.out = spawn(config.pmacctd, pmArgs_out.split(' '));
 pmacctdProcesses.out.on('exit', function(code) {
@@ -68,5 +67,4 @@ pmacctdProcesses.out.on('exit', function(code) {
 pmacctdProcesses.out.stdout.on('data', function(data) {
     processTopTalkers('out', data.toString());
 });
-pmacctdProcesses.out.stderr.on('data', function(data) {
-});
+pmacctdProcesses.out.stderr.on('data', function(data) {});
