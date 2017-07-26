@@ -1,0 +1,27 @@
+{
+  "name": "network-toptalkers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binRick/node-network-toptalkers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/binRick/node-network-toptalkers/issues"
+  },
+  "homepage": "https://github.com/binRick/node-network-toptalkers#readme",
+  "dependencies": {
+    "async": "^2.5.0",
+    "chalk": "^2.0.1",
+    "condense-whitespace": "^1.0.0",
+    "prettyjson": "^1.2.1",
+    "underscore": "^1.8.3",
+    "validate-ip": "^1.0.1"
+  }
+}
