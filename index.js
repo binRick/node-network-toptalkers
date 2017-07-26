@@ -1,4 +1,5 @@
 var c = require('chalk'),
+    pj = require('prettyjson'),
     validateip = require('validate-ip'),
     condenseWhitespace = require('condense-whitespace'),
     _ = require('underscore'),
@@ -29,7 +30,7 @@ var processTopTalkers = function(direction, topTalkers) {
 };
 
 process.on('exit', function() {
-    _.each(pmacctdProcesses, function(pmacctdProcess) {
+    _.each([pmacctdProcesses.in, pmacctdProcesses.out], function(pmacctdProcess) {
         console.log(c.yellow('\nKilling pmacctd child process with pid ' + c.red.bgWhite(pmacctdProcess.pid)));
         pmacctdProcess.kill();
     });
