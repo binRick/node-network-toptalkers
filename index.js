@@ -1,4 +1,5 @@
 var validateip = require('validate-ip'),
+    c = require('chalk'),
     condenseWhitespace = require('condense-whitespace'),
     _ = require('underscore'),
     spawn = require('child_process').spawn,
